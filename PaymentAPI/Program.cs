@@ -28,6 +28,12 @@ if (app.Environment.IsDevelopment()) {
     });
 }
 
+app.UseCors(options
+    => options.WithOrigins("http://localhost:4200")
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+);
+
 app.UseAuthorization();
 
 app.MapControllers();
