@@ -14,7 +14,7 @@ public class PaymentDetailController : ControllerBase
 
     // GET: api/PaymentDetail
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<PaymentDetail>>> GetPaymentDetail()
+    public async Task<ActionResult<IEnumerable<PaymentDetail>>> GetPaymentDetails()
     {
         return await _context.PaymentDetails.ToListAsync();
     }
@@ -61,7 +61,7 @@ public class PaymentDetailController : ControllerBase
             }
         }
 
-        return NoContent();
+        return Ok(await _context.PaymentDetails.ToListAsync());
     }
 
     // POST: api/PaymentDetail
@@ -72,7 +72,7 @@ public class PaymentDetailController : ControllerBase
         _context.PaymentDetails.Add(paymentdetail);
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction("GetPaymentDetail", new { paymentdetailid = paymentdetail.PaymentDetailId }, paymentdetail);
+        return Ok(await _context.PaymentDetails.ToListAsync());
     }
 
     // DELETE: api/PaymentDetail/5
@@ -88,7 +88,7 @@ public class PaymentDetailController : ControllerBase
         _context.PaymentDetails.Remove(paymentdetail);
         await _context.SaveChangesAsync();
 
-        return NoContent();
+        return Ok(await _context.PaymentDetails.ToListAsync());
     }
 
     private bool PaymentDetailExists(int? paymentdetailid)
