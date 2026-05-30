@@ -28,6 +28,18 @@ dotnet user-secrets set "ConnectionStrings:PaymentDetailContext" "Server=YOUR_SE
 
 > `UserSecretsId` in the project file is safe to commit. Secret values are stored outside the repository.
 
+### 3) Get connection strings
+
+```bash
+dotnet user-secrets list --project PaymentAPI/PaymentAPI.csproj
+```
+
+or just inside the project:
+
+```bash
+dotnet user-secrets list
+```
+
 ## Run
 
 ```bash
