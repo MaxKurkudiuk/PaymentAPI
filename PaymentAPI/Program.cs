@@ -11,7 +11,9 @@ builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<PaymentDetailContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DevConnection"))
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DevConnection"),
+        sqlOptions => sqlOptions.EnableRetryOnFailure())
 );
 
 var app = builder.Build();
@@ -34,8 +36,14 @@ app.UseCors(options
     .AllowAnyHeader()
 );
 
+//app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope()) {
+    var dbContext = scope.ServiceProvider.GetRequiredService<PaymentDetailContext>();
+    dbContext.Database.Migrate();
+}
 
 app.Run();
