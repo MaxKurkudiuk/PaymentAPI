@@ -41,7 +41,8 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-using (var scope = app.Services.CreateScope()) {
+if (!app.Environment.IsEnvironment("Testing")) {
+    using var scope = app.Services.CreateScope();
     var dbContext = scope.ServiceProvider.GetRequiredService<PaymentDetailContext>();
     dbContext.Database.Migrate();
 }
