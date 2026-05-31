@@ -16,7 +16,7 @@ public class PaymentDetailController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<PaymentDetail>>> GetPaymentDetails()
     {
-        return await _context.PaymentDetails.ToListAsync();
+        return await GetAllPaymentDetailsAsync();
     }
 
     // GET: api/PaymentDetail/5
@@ -61,7 +61,7 @@ public class PaymentDetailController : ControllerBase
             }
         }
 
-        return Ok(await _context.PaymentDetails.ToListAsync());
+        return Ok(await GetAllPaymentDetailsAsync());
     }
 
     // POST: api/PaymentDetail
@@ -72,24 +72,25 @@ public class PaymentDetailController : ControllerBase
         _context.PaymentDetails.Add(paymentdetail);
         await _context.SaveChangesAsync();
 
-        return Ok(await _context.PaymentDetails.ToListAsync());
+        return Ok(await GetAllPaymentDetailsAsync());
     }
 
     // DELETE: api/PaymentDetail/5
     [HttpDelete("{paymentdetailid}")]
-    public async Task<IActionResult> DeletePaymentDetail(int? paymentdetailid)
-    {
+    public async Task<IActionResult> DeletePaymentDetail(int? paymentdetailid) {
         var paymentdetail = await _context.PaymentDetails.FindAsync(paymentdetailid);
-        if (paymentdetail == null)
-        {
+        if (paymentdetail == null) {
             return NotFound();
         }
 
         _context.PaymentDetails.Remove(paymentdetail);
         await _context.SaveChangesAsync();
 
-        return Ok(await _context.PaymentDetails.ToListAsync());
+        return Ok(await GetAllPaymentDetailsAsync());
     }
+
+    private async Task<List<PaymentDetail>> GetAllPaymentDetailsAsync() 
+        => await _context.PaymentDetails.AsNoTracking().ToListAsync();
 
     private bool PaymentDetailExists(int? paymentdetailid)
     {
